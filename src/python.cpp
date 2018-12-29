@@ -9,6 +9,10 @@
 
 namespace py = pybind11;
 
+#ifdef _MSC_VER
+#define sscanf sscanf_s
+#endif
+
 PYBIND11_MODULE(_example, m) {
 
     py::class_<Example>(m, "Example")

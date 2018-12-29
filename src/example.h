@@ -2,10 +2,11 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "export.h"
 
 class Person;
 
-class Example {
+class EXPORTED Example {
 public:
     Example();
     ~Example(){}
