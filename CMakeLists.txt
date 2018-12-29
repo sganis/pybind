@@ -112,7 +112,7 @@ if (WIN32)
         COMMENT "Packaging for windows..."
     )
 else()
-    add_custom_command(TARGET pack POST_BUILD
+    add_custom_command(TARGET example POST_BUILD
         COMMAND ${ROOT}/script/package.sh .
         COMMENT "Packaging for linux..."
     )
