@@ -112,12 +112,12 @@ FILE(GLOB_RECURSE pack "pack/*.*")
 add_custom_target(pack SOURCES ${pack})
 if (WIN32)
     add_custom_command(TARGET example POST_BUILD
-        COMMAND ${PYTHON}\\python.exe ${ROOT}/script/package.py .
+        COMMAND ${PYTHON}\\python.exe ${ROOT}/tool/package.py .
         COMMENT "Packaging for windows..."
     )
 else()
     add_custom_command(TARGET example POST_BUILD
-        COMMAND ${ROOT}/script/package.py .
+        COMMAND ${ROOT}/tool/package.py .
         COMMENT "Packaging for linux..."
     )
 endif()
