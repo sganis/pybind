@@ -39,7 +39,7 @@ setuptools.setup(
         "Operating System :: POSIX :: Linux",
     ],
     package_data = {
-        f'{package}': ['*.so'],
+        f'{package}': ['*.so', '*.pyd'],
     },
     data_files = [
         ('', ['LICENSE.txt', 'README.md']),

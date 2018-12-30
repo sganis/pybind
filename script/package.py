@@ -5,14 +5,14 @@ import sys
 import os
 
 assert len(sys.argv) > 1
-BUILD=sys.argv[1]
+BUILD = os.path.realpath(sys.argv[1])
 DIR = os.path.dirname(os.path.realpath(__file__))
 
 def package():	
 	print('Packaging...')	
 	
 	if os.name == 'nt':
-		os.system(fr'copy {BUILD}\example.dll {DIR}\..\pack\example\_example.pyd')
+		os.system(fr'copy {BUILD}\Release\example.dll {DIR}\..\pack\example\_example.pyd')
 	else: # posix or mac
 		os.system(f'cp -v {BUILD}/libexample.so {DIR}/../pack/example/_example.so')
 
