@@ -1,7 +1,7 @@
 ################################################################################
 # example pybind11 cmake file
 ################################################################################
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.0)
 project (pybind)
 
 set(CMAKE_VERBOSE_MAKEFILE on)
@@ -12,20 +12,21 @@ set(ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 set(APP ${CMAKE_CURRENT_SOURCE_DIR}/app)
 set(SRC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(TEST ${CMAKE_CURRENT_SOURCE_DIR}/test)
+
 #set(BUILD ${CMAKE_BINARY_DIR})
+#message("BUILD: ${BUILD}")
 #file(MAKE_DIRECTORY ${BUILD})
-message("BUILD: ${BUILD}")
+
 include_directories(${SRC})
 #link_directories(${BUILD})
-#SET(CMAKE_EXE_LINKER_FLAGS
-#    "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath,'\$ORIGIN/'")
+
+#SET(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath,'\$ORIGIN/'")
 SET(CMAKE_BUILD_RPATH "\$ORIGIN")
 
 if (MSVC)
-    include_directories(C:\\Python37\\include)
-    link_directories( C:\\Python37\\libs)
-    # target_compile_options(example PRIVATE /EHsc /MTd /W2 /c)
-    # target_compile_definitions(example PRIVATE WIN_EXPORT)
+    SET(PYTHON "C:\\Python37")
+    include_directories(${PYTHON}\\include)
+    link_directories(${PYTHON}\\libs)
 else()
     include_directories(
         /usr/include/python3.6
@@ -38,8 +39,10 @@ add_library(
     example SHARED
     ${SRC}/example.cpp
     ${SRC}/example.h
+    ${SRC}/example_py.cpp
     ${SRC}/person.cpp
     ${SRC}/person.h
+    ${SRC}/person_py.cpp
     ${SRC}/python.cpp
     ${SRC}/export.h
 )
@@ -63,6 +66,7 @@ if (WIN32)
 else()
     target_link_libraries(app example python3.6m)
 endif()
+
 #add_custom_command(TARGET app POST_BUILD
 #    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:app> ${BUILD}
 #    COMMENT "Copying binaries to build diretory..."
@@ -108,12 +112,12 @@ FILE(GLOB_RECURSE pack "pack/*.*")
 add_custom_target(pack SOURCES ${pack})
 if (WIN32)
     add_custom_command(TARGET example POST_BUILD
-        COMMAND ${ROOT}/script/package.bat .
+        COMMAND ${PYTHON}\\python.exe ${ROOT}/script/package.py .
         COMMENT "Packaging for windows..."
     )
 else()
     add_custom_command(TARGET example POST_BUILD
-        COMMAND ${ROOT}/script/package.sh .
+        COMMAND ${ROOT}/script/package.py .
         COMMENT "Packaging for linux..."
     )
 endif()
