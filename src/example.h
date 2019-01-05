@@ -4,11 +4,11 @@
 * Date:    01/04/2019
 ***********************************************************************/
 #pragma once
+#pragma warning (disable : 4251)
 #include "export.h"
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include <typeinfo>
 
 class EXPORTED Person {
  public:
