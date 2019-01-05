@@ -40,12 +40,12 @@ add_library(
 )
 if (WIN32)
     target_compile_definitions(example PRIVATE WIN_EXPORT)
+else()
+    add_custom_command(TARGET example POST_BUILD
+        COMMAND ${ROOT}/tool/analyze.sh ${ROOT}/src
+        COMMENT "Analysing..."
+    )
 endif()
-
-add_custom_command(TARGET example POST_BUILD
-    COMMAND ${ROOT}/tool/analyze.sh ${ROOT}/src
-    COMMENT "Analysing..."
-)
 
 ################################################################################
 # app exe

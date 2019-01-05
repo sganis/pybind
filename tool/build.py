@@ -17,8 +17,7 @@ def build(BUILD_DIR):
 		os.system(fr'md "{BUILD_DIR}\Release"')
 		os.chdir(f'{BUILD_DIR}')
 		os.system(f'cmake {SRC} -G "Visual Studio 14" -A x64')
-		# os.system('msbuild /P:Configuration=Release ALL_BUILD.vcxproj')
-		os.system('cmake --build . --target ALL_BUILD --config Release --parallel 8')
+		os.system('cmake --build . --target ALL_BUILD --config Release --parallel 8 -- -verbosity:minimal')
 	else:
 		os.chdir(BUILD_DIR)
 		os.system(f'cmake {SRC} && make -j8')
