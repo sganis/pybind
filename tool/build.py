@@ -23,7 +23,7 @@ def build():
         os.system(f'cmake {SRC} -G "Visual Studio 14" -A x64')
         os.system(f'cmake --build . --target ALL_BUILD --config Release --parallel 8 -- -verbosity:minimal')
     else:
-        os.system(f'cmake {SRC} -G Ninja && ninja')
+        os.system(f'cmake {SRC} -G Ninja -DCMAKE_BUILD_TYPE=Release && ninja')
 
     elapsed = time.strftime('%M:%S', time.gmtime(time.time()-t))
 
