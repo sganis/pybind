@@ -1,4 +1,5 @@
 // Copyright 2005, Google Inc.
+
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -41,7 +42,6 @@
 #include "gtest/internal/gtest-death-test-internal.h"
 
 namespace testing {
-
 // This flag controls the style of death tests.  Valid values are "threadsafe",
 // meaning that the death test child process will re-execute the test binary
 // from the start, running only a single death test, or "fast",
@@ -52,15 +52,13 @@ GTEST_DECLARE_string_(death_test_style);
 #if GTEST_HAS_DEATH_TEST
 
 namespace internal {
-
 // Returns a Boolean value indicating whether the caller is currently
 // executing in the context of the death test child process.  Tools such as
 // Valgrind heap checkers may need this to modify their behavior in death
 // tests.  IMPORTANT: This is an internal utility.  Using it may break the
 // implementation of death tests.  User code MUST NOT use it.
 GTEST_API_ bool InDeathTestChild();
-
-}  // namespace internal
+} // namespace internal
 
 // The following macros are useful for writing death tests.
 
@@ -188,27 +186,30 @@ GTEST_API_ bool InDeathTestChild();
 
 // Tests that an exit code describes a normal exit with a given exit code.
 class GTEST_API_ ExitedWithCode {
- public:
-  explicit ExitedWithCode(int exit_code);
-  bool operator()(int exit_status) const;
- private:
-  // No implementation - assignment is unsupported.
-  void operator=(const ExitedWithCode& other);
+  public:
+    explicit ExitedWithCode(int exit_code);
+    bool operator()(int exit_status) const;
 
-  const int exit_code_;
+  private:
+    // No implementation - assignment is unsupported.
+    void operator=(const ExitedWithCode& other);
+
+    const int exit_code_;
 };
 
 # if !GTEST_OS_WINDOWS
+
 // Tests that an exit code describes an exit due to termination by a
 // given signal.
 class GTEST_API_ KilledBySignal {
- public:
-  explicit KilledBySignal(int signum);
-  bool operator()(int exit_status) const;
- private:
-  const int signum_;
+  public:
+    explicit KilledBySignal(int signum);
+    bool operator()(int exit_status) const;
+
+  private:
+    const int signum_;
 };
-# endif  // !GTEST_OS_WINDOWS
+# endif // !GTEST_OS_WINDOWS
 
 // EXPECT_DEBUG_DEATH asserts that the given statements die in debug mode.
 // The death testing framework causes this to have interesting semantics,
@@ -256,20 +257,20 @@ class GTEST_API_ KilledBySignal {
 # ifdef NDEBUG
 
 #  define EXPECT_DEBUG_DEATH(statement, regex) \
-  GTEST_EXECUTE_STATEMENT_(statement, regex)
+    GTEST_EXECUTE_STATEMENT_(statement, regex)
 
 #  define ASSERT_DEBUG_DEATH(statement, regex) \
-  GTEST_EXECUTE_STATEMENT_(statement, regex)
+    GTEST_EXECUTE_STATEMENT_(statement, regex)
 
-# else
+# else // ifdef NDEBUG
 
 #  define EXPECT_DEBUG_DEATH(statement, regex) \
-  EXPECT_DEATH(statement, regex)
+    EXPECT_DEATH(statement, regex)
 
 #  define ASSERT_DEBUG_DEATH(statement, regex) \
-  ASSERT_DEATH(statement, regex)
+    ASSERT_DEATH(statement, regex)
 
-# endif  // NDEBUG for EXPECT_DEBUG_DEATH
+# endif // NDEBUG for EXPECT_DEBUG_DEATH
 #endif  // GTEST_HAS_DEATH_TEST
 
 // EXPECT_DEATH_IF_SUPPORTED(statement, regex) and
@@ -282,13 +283,12 @@ class GTEST_API_ KilledBySignal {
     EXPECT_DEATH(statement, regex)
 # define ASSERT_DEATH_IF_SUPPORTED(statement, regex) \
     ASSERT_DEATH(statement, regex)
-#else
+#else // if GTEST_HAS_DEATH_TEST
 # define EXPECT_DEATH_IF_SUPPORTED(statement, regex) \
     GTEST_UNSUPPORTED_DEATH_TEST_(statement, regex, )
 # define ASSERT_DEATH_IF_SUPPORTED(statement, regex) \
-    GTEST_UNSUPPORTED_DEATH_TEST_(statement, regex, return)
-#endif
-
-}  // namespace testing
+    GTEST_UNSUPPORTED_DEATH_TEST_(statement, regex, return )
+#endif // if GTEST_HAS_DEATH_TEST
+} // namespace testing
 
 #endif  // GTEST_INCLUDE_GTEST_GTEST_DEATH_TEST_H_

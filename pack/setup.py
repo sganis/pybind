@@ -1,7 +1,7 @@
 import setuptools
 import re
 
-with open("../version.h", "r") as f:
+with open("../src/version.h", "r") as f:
     match = re.match(r'.*VERSION[ \t]+\"([0-9\.-]+)\"',
         f.read().replace('\n',''))
     if match:

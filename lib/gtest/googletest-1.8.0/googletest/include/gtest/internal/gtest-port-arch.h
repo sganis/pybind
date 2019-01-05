@@ -1,4 +1,5 @@
 // Copyright 2015, Google Inc.
+
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -54,26 +55,27 @@
 #   define GTEST_OS_WINDOWS_PHONE 1
 #  elif WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
 #   define GTEST_OS_WINDOWS_RT 1
-#  else
-    // WINAPI_FAMILY defined but no known partition matched.
-    // Default to desktop.
+#  else // if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+
+// WINAPI_FAMILY defined but no known partition matched.
+// Default to desktop.
 #   define GTEST_OS_WINDOWS_DESKTOP 1
-#  endif
-# else
+#  endif // if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+# else // ifdef _WIN32_WCE
 #  define GTEST_OS_WINDOWS_DESKTOP 1
-# endif  // _WIN32_WCE
+# endif // _WIN32_WCE
 #elif defined __APPLE__
 # define GTEST_OS_MAC 1
 # if TARGET_OS_IPHONE
 #  define GTEST_OS_IOS 1
-# endif
+# endif // if TARGET_OS_IPHONE
 #elif defined __FreeBSD__
 # define GTEST_OS_FREEBSD 1
 #elif defined __linux__
 # define GTEST_OS_LINUX 1
 # if defined __ANDROID__
 #  define GTEST_OS_LINUX_ANDROID 1
-# endif
+# endif // if defined __ANDROID__
 #elif defined __MVS__
 # define GTEST_OS_ZOS 1
 #elif defined(__sun) && defined(__SVR4)
@@ -88,6 +90,6 @@
 # define GTEST_OS_OPENBSD 1
 #elif defined __QNX__
 # define GTEST_OS_QNX 1
-#endif  // __CYGWIN__
+#endif // __CYGWIN__
 
-#endif  // GTEST_INCLUDE_GTEST_INTERNAL_GTEST_PORT_ARCH_H_
+#endif // GTEST_INCLUDE_GTEST_INTERNAL_GTEST_PORT_ARCH_H_

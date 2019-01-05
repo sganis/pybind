@@ -1,4 +1,5 @@
 // Copyright 2015, Google Inc.
+
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -39,4 +40,4 @@
 #ifndef GTEST_INCLUDE_GTEST_INTERNAL_CUSTOM_GTEST_PRINTERS_H_
 #define GTEST_INCLUDE_GTEST_INTERNAL_CUSTOM_GTEST_PRINTERS_H_
 
-#endif  // GTEST_INCLUDE_GTEST_INTERNAL_CUSTOM_GTEST_PRINTERS_H_
+#endif // GTEST_INCLUDE_GTEST_INTERNAL_CUSTOM_GTEST_PRINTERS_H_
