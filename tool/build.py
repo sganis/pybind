@@ -4,36 +4,37 @@
 import sys
 import os
 import time
+import shutil
 
-DIR = os.path.dirname(os.path.realpath(__file__))
-	
-def build(BUILD_DIR):	
-	t = time.time()
-	print('Building release mode...')
-	
-	SRC = os.path.realpath(f'{DIR}/..')
+DIR   = os.path.dirname(os.path.realpath(__file__))
+SRC   = os.path.realpath(f'{DIR}/..')
+BUILD = os.path.realpath(f'{DIR}/../build')
+WHEEL = os.path.realpath(F'{DIR}/../pack/dist')
 
-	if os.name == 'nt':
-		os.system(fr'md "{BUILD_DIR}\Release"')
-		os.chdir(f'{BUILD_DIR}')
-		os.system(f'cmake {SRC} -G "Visual Studio 14" -A x64')
-		os.system('cmake --build . --target ALL_BUILD --config Release --parallel 8 -- -verbosity:minimal')
-	else:
-		os.chdir(BUILD_DIR)
-		os.system(f'cmake {SRC} && make -j8')
+def build():
+    t = time.time()
+    print('Building release mode...')
 
-	print('\nDone.')
-	print('Binaries    : {}'.format(os.path.realpath('.')))
-	print('Python wheel: {}'.format(os.path.realpath('../../pack/dist')))
-	print('Time elapsed: {} (mm:ss)'.format(
-		time.strftime('%M:%S', time.gmtime(time.time()-t)) ))
+    shutil.rmtree(BUILD)
+    os.mkdir(BUILD)
+    os.chdir(f'{BUILD}')
+
+    if os.name == 'nt':
+        os.system(f'cmake {SRC} -G "Visual Studio 14" -A x64')
+        os.system(f'cmake --build . --target ALL_BUILD --config Release --parallel 8 -- -verbosity:minimal')
+    else:
+        os.system(f'cmake {SRC} -G Ninja && ninja')
+
+    elapsed = time.strftime('%M:%S', time.gmtime(time.time()-t))
+
+    print(f'Binaries    : {BUILD}')
+    print(f'Python wheel: {WHEEL}')
+    print(f'Time elapsed: {elapsed} (mm:ss)')
+    print('Done.')
 
 
 if __name__ == '__main__':	
-
-	assert len(sys.argv) > 1 # usage: ./build.py <build_dir>
-	BUILD_DIR = os.path.realpath(sys.argv[1])
-	build(BUILD_DIR)
+        build()
 
 		
 	

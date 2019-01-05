@@ -2,26 +2,31 @@
 # example pybind11 cmake file
 ################################################################################
 cmake_minimum_required(VERSION 3.0)
+
 project (pybind)
 
-set(CMAKE_VERBOSE_MAKEFILE on)
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+# subproject paths
 set(ROOT ${CMAKE_CURRENT_SOURCE_DIR})
-set(APP ${CMAKE_CURRENT_SOURCE_DIR}/app)
-set(SRC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(APP  ${CMAKE_CURRENT_SOURCE_DIR}/app)
+set(SRC  ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(TEST ${CMAKE_CURRENT_SOURCE_DIR}/test)
 
-SET(CMAKE_BUILD_RPATH "\$ORIGIN")
+# global compiler settings
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+SET(CMAKE_BUILD_RPATH \$ORIGIN)
+SET(CMAKE_CXX_COMPILER /usr/bin/g++)
 
+# include paths
 include_directories(${SRC})
-
-if (MSVC)
-    SET(PYTHON C:\\Python37\\python.exe)
-    include_directories(C:\\Python37\\include)
-    link_directories(C:\\Python37\\libs)
+if (WIN32)
+    SET(PYWIN C:\\Python37)
+    SET(PYTHON ${PYWIN}\\python.exe)
+    include_directories(${PYWIN}\\include)
+    link_directories(${PYWIN}\\libs)
 else()
+    # python3 -m pybind11 --includes
     include_directories(
         /usr/include/python3.6
         /usr/local/include/python3.6
@@ -63,7 +68,6 @@ endif()
 ################################################################################
 # gtest exe
 set(GOOGLE "${ROOT}/lib/gtest/googletest-1.8.0")
-SET(CMAKE_CXX_COMPILER /usr/bin/g++)
 add_executable(test_example
     ${TEST}/test_example.cpp
     ${GOOGLE}/googletest/src/gtest-all.cc
@@ -82,7 +86,6 @@ else()
         COMMENT "Analysing..."
     )
 endif()
-
 
 ################################################################################
 # all files
