@@ -7,16 +7,19 @@ project (pybind)
 
 # subproject paths
 set(ROOT ${CMAKE_CURRENT_SOURCE_DIR})
-set(APP  ${CMAKE_CURRENT_SOURCE_DIR}/app)
-set(SRC  ${CMAKE_CURRENT_SOURCE_DIR}/src)
-set(TEST ${CMAKE_CURRENT_SOURCE_DIR}/test)
+set(APP  ${ROOT}/app)
+set(SRC  ${ROOT}/src)
+set(TEST ${ROOT}/test)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${ROOT}/build)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ROOT}/build)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${ROOT}/build)
 
 # global compiler settings
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 SET(CMAKE_BUILD_RPATH \$ORIGIN)
-SET(CMAKE_CXX_COMPILER /usr/bin/g++)
+SET(CMAKE_C_COMPILER ${CMAKE_CXX_COMPILER})
 
 # include paths
 include_directories(${SRC})
@@ -67,16 +70,13 @@ endif()
 
 ################################################################################
 # gtest exe
-set(GOOGLE "${ROOT}/lib/gtest/googletest-1.8.0")
+set(GOOGLE "${ROOT}/lib")
 add_executable(test_example
     ${TEST}/test_example.cpp
-    ${GOOGLE}/googletest/src/gtest-all.cc
-    ${GOOGLE}/googletest/src/gtest_main.cc
+    ${GOOGLE}/gtest/gtest-all.cc
+    ${GOOGLE}/gtest/gtest_main.cc
 )
-target_include_directories(test_example PRIVATE
-    ${GOOGLE}/googletest
-    ${GOOGLE}/googletest/include
-)
+target_include_directories(test_example PRIVATE  ${GOOGLE})
 if (WIN32)
     target_link_libraries(test_example example python37)
 else()

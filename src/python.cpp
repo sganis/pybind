@@ -26,41 +26,29 @@ PYBIND11_MODULE(_example, m) {
     )pbdoc";
     m.attr("__version__") = VERSION;
 
-    py::class_<Example>(m, "Example")
-    .def(py::init())
-    .def("hello",       &Example::hello)
+    py::class_<Example> ex(m, "Example");
+    ex.def(py::init());
+    ex.def("hello",       &Example::hello);
+    ex.def("people",      &Example::people,
+           py::return_value_policy::reference);
+    ex.def("__str__",     &Example::str);
+    ex.def("__repr__",    &Example::repr);
+    ex.def("__getitem__", &Example::operator[]);
 
-    // pointer always by reference
-    .def("people",      &Example::people, py::return_value_policy::reference)
-    .def("__str__",     &Example::str)
-    .def("__repr__",    &Example::repr)
-    .def("__getitem__", &Example::operator[]);
-
-    py::class_<Person>(m, "Person")
-
-    // constructors
-    .def(py::init())
-    .def(py::init<const std::string&>())
-
-    // properties
-    .def_property("id", &Person::id, &Person::set_id)
-
-    // dunder methods
-    .def("__repr__",    &Person::to_json)
-    .def("__str__",     &Person::hello)
-
-    // methods
-    .def("hello",       &Person::hello)
-    .def("to_json",     &Person::to_json)
-    .def("type",        &Person::type)
-
-    // lambda function
-    .def("only_pybind", [](const Person& p) {
+    py::class_<Person> pe(m, "Person");
+    pe.def(py::init());
+    pe.def(py::init<const std::string&>(), py::arg("id"),
+           "Constructor");
+    pe.def_property("id", &Person::id, &Person::set_id);
+    pe.def("__repr__",    &Person::to_json);
+    pe.def("__str__",     &Person::hello);
+    pe.def("hello",       &Person::hello);
+    pe.def("to_json",     &Person::to_json);
+    pe.def("type",        &Person::type);
+    pe.def("only_pybind", [](const Person& p) {
         return "Person " + p.id() + ": only pybind method";
     });
 
-    py::class_<Programmer, Person>(m, "Programmer")
-
-    // constructors
-    .def(py::init<const std::string&>());
+    py::class_<Programmer, Person> pr(m, "Programmer");
+    pr.def(py::init<const std::string&>(), py::arg("id"));
 }
